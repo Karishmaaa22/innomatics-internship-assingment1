@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Budget Tracker</title>
+   <link rel="stylesheet" href="trackerstyle.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <h1>Personal Budget Tracker</h1>
+    <nav>
+      <a href="#add-expense">Add Expense</a> |
+      <a href="#budget-summary">View Budget</a>
+    </nav>
+  </header>
+
+  <!-- Introduction Section -->
+  <section id="introduction">
+    <h1>Welcome to Your Personal Budget Tracker</h1>
+    <p>
+      This tool helps you manage your monthly income and expenses. You can add your income and expenses, categorize them, and view a summary of your budget in the table below.
+    </p>
+  </section>
+
+  <!--Income/Expense Section -->
+  <section id="add-expense">
+    <h2>Add Income or Expense</h2>
+    <form id="budget-form">
+      <label for="type">Type:</label>
+      <select id="type" name="type" required>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+
+      <label for="category">Category:</label>
+      <select id="category" name="category" required>
+        <option value="food">Food</option>
+        <option value="transportation">Transportation</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="utilities">Utilities</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required>
+
+      <button type="submit">Add Entry</button>
+    </form>
+  </section>
+
+  <!-- Budget Summary Section -->
+  <section id="budget-summary">
+    <h2>Budget Summary</h2>
+    <table id="summary-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="total">
+      <p>Total Income: <span id="total-income">0</span></p>
+      <p>Total Expenses: <span id="total-expenses">0</span></p>
+      <p>Net Balance: <span id="net-balance">0</span></p>
+    </div>
+  </section>
+
+  
+  <footer>
+    <p>Personal Budget Tracker v1.0 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+  </footer>
+
+
+  <script>
+    let totalIncome = 0;
+    let totalExpenses = 0;
+
+    document.getElementById('budget-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      
+      const type = document.getElementById('type').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const category = document.getElementById('category').value;
+      const date = document.getElementById('date').value;
+
+      
+      if (type === 'income') {
+        totalIncome += amount;
+      } else {
+        totalExpenses += amount;
+      }
+
+      
+      document.getElementById('total-income').textContent = totalIncome.toFixed(2);
+      document.getElementById('total-expenses').textContent = totalExpenses.toFixed(2);
+      document.getElementById('net-balance').textContent = (totalIncome - totalExpenses).toFixed(2);
+
+      
+      const tableBody = document.querySelector('#summary-table tbody');
+      const newRow = document.createElement('tr');
+
+      newRow.innerHTML = `
+        <td>${category}</td>
+        <td>${amount.toFixed(2)}</td>
+        <td>${date}</td>
+        <td>${type}</td>
+      `;
+
+      
+      tableBody.appendChild(newRow);
+
+    
+      document.getElementById('budget-form').reset();
+    });
+  </script>
+</body>
+</html>
